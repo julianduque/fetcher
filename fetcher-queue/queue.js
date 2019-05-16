@@ -27,6 +27,7 @@ class Queue extends EventEmitter {
 
   /**
    * Add a job or array of jobs
+   *
    * @param {Job} job
    */
   async add (job) {
@@ -35,11 +36,16 @@ class Queue extends EventEmitter {
     this._queue.unshift(job)
     this._pendingCount++
 
-    const { id, status } = job
-    this._pending.set(job.id, { id, status })
+    const { id, status, description } = job
+    this._pending.set(job.id, { id, status, description })
     await this._runQueue()
   }
 
+  /**
+   * Add multiple Jobs as an array
+   *
+   * @param {Array} jobs
+   */
   async addAll (jobs) {
     assert(jobs, new Error('jobs is required'))
     assert(Array.isArray(jobs), 'jobs must be an array')
@@ -95,10 +101,18 @@ class Queue extends EventEmitter {
     return false
   }
 
+  /**
+   * Return a Job from the pending list
+   *
+   * @param {String} id
+   */
   get (id) {
     return this._pending.get(id)
   }
 
+  /**
+   * Return the list of pending Jobs
+   */
   get pending () {
     return Array.from(this._pending.values()).map(job => ({
       id: job.id,
@@ -107,6 +121,9 @@ class Queue extends EventEmitter {
     }))
   }
 
+  /**
+   * Return size of Queue
+   */
   get size () {
     return this._queue.length
   }

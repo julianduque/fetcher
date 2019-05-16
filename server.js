@@ -14,6 +14,7 @@ const server = http.createServer(app)
 const db = new Database(config.db)
 const queue = new Queue(8)
 const api = new FetcherAPI(db, queue)
+
 app.use(bodyParser.json())
 app.use('/', api.getRoutes())
 app.use((err, req, res, next) => {

@@ -4,9 +4,16 @@ const request = require('request-promise-native')
 const { Job } = require('@fetcher/queue')
 const { Router } = require('express')
 
+/**
+ * FetcherAPI
+ *
+'* POST /job - Creates a Job
+ * GET /job/:jobId - Returns a pending or completed Job
+ * GET /jobs - Returns all pending Jobs
+ *
+ */
 class FetcherAPI {
   /**
-   *
    * @param {Database} db Database instance
    * @param {Queue} queue Queue instance
    */
@@ -16,19 +23,21 @@ class FetcherAPI {
     this._db = db
 
     this._setupRoutes()
+
+    // Process completed Jobs
     this._queue.on('completed', async job => {
       try {
         // Store on DB
-        const { id, status, results, error } = job
+        const { id, status, results, description, error } = job
         if (status === 'error') {
           await this._db.saveResult(id, {
-            status, error
+            status, error, description
           })
           return
         }
 
         await this._db.saveResult(id, {
-          status, results
+          status, results, description
         })
       } catch (err) {
         console.error(err.message)
@@ -36,9 +45,6 @@ class FetcherAPI {
     })
   }
 
-  /**
-   * Setup Routes
-   */
   _setupRoutes () {
     // Endpoint Discovery Route
     this._router.get('/', (req, res) => {
@@ -80,7 +86,8 @@ class FetcherAPI {
           res.send({
             id: jobId,
             status: job.status,
-            results: job.results
+            results: job.results,
+            description: job.description
           })
           return
         }
@@ -90,7 +97,8 @@ class FetcherAPI {
         if (job) {
           res.send({
             id: jobId,
-            status: job.status
+            status: job.status,
+            description: job.description
           })
           return
         }
