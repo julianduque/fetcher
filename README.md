@@ -1,12 +1,27 @@
 # Fetcher
 
 Download website contents (just HTML) using a queue job with a provided REST API
-_This project was built for educational purposes only_
+
+> Note: This project was built for educational purposes only
 
 ## Installation
 
 ``` bash
 npm install
+```
+
+## Run with Docker
+
+First you'll need to build the image by running:
+
+``` bash
+npm run build:docker
+```
+
+Then you can run it by using `docker-compose`:
+
+``` bash
+docker-compose up
 ```
 
 ## Configuration
