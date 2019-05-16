@@ -1,0 +1,17 @@
+{
+  "name": "@fetcher/db",
+  "version": "1.0.0",
+  "description": "Fetcher Database module",
+  "main": "index.js",
+  "scripts": {
+    "lint": "standard --fix",
+    "test": "jest",
+    "test:cov": "jest --coverage"
+  },
+  "keywords": [],
+  "author": "Julián Duque <julianduquej@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "ioredis": "^4.9.3"
+  }
+}

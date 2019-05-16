@@ -1,0 +1,15 @@
+version: '3'
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+  fetcher:
+    image: fetcher-server
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      REDIS_HOST: redis
+    depends_on:
+      - redis

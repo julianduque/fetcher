@@ -1,0 +1,38 @@
+{
+  "name": "fetcher",
+  "version": "1.0.0",
+  "description": "Fetcher: A Website downloader",
+  "main": "server.js",
+  "scripts": {
+    "build:docker": "docker build . -t fetcher-server",
+    "lint": "standard --fix",
+    "test": "jest",
+    "test:cov": "jest --coverage"
+  },
+  "author": "Julian Duque <julianduquej@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@fetcher/api": "file:fetcher-api",
+    "@fetcher/config": "file:fetcher-config",
+    "@fetcher/db": "file:fetcher-db",
+    "@fetcher/queue": "file:fetcher-queue",
+    "body-parser": "^1.19.0",
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "jest": "^24.8.0",
+    "standard": "^12.0.1",
+    "supertest": "^4.0.2"
+  },
+  "standard": {
+    "env": [
+      "jest"
+    ],
+    "ignore": [
+      "**/node_modules/**"
+    ]
+  },
+  "jest": {
+    "verbose": true
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@fetcher/api",
+  "version": "1.0.0",
+  "description": "Fetcher API Module",
+  "main": "index.js",
+  "scripts": {
+    "lint": "standard --fix"
+  },
+  "author": "Julián Duque <julianduquej@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@fetcher/config": "file:../fetcher-config",
+    "@fetcher/db": "file:../fetcher-db",
+    "@fetcher/queue": "file:../fetcher-queue",
+    "express": "^4.16.4",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7"
+  },
+  "devDependencies": {
+    "standard": "^12.0.1"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "@fetcher/config",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Julián Duque <julianduquej@gmail.com>",
+  "license": "MIT"
+}
