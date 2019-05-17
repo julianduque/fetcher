@@ -63,7 +63,7 @@ async function main () {
   const job = new Job(task)
   queue.add(job)
 
-  job.on('completed', job => {
+  job.on('completed', results => {
     // Completed job
   })
 
