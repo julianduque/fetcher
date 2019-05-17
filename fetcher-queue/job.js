@@ -19,6 +19,8 @@ const uuid = require('uuid')
  * @property {String} id Job ID
  * @property {String} status Job status - pending, complete
  * @property {any} results Job results
+ * @property {Error} error Job error (if it failed)
+ * @property {String|undefined} description Job description
  */
 
 class Job extends EventEmitter {
@@ -26,7 +28,7 @@ class Job extends EventEmitter {
    * Creates a new Job
    *
    * @param {Promise<any>} task Task to run
-   * @param {JobMeta | null} meta Job metadata
+   * @param {JobMeta|null} meta Job metadata
    */
   constructor (task, meta = {}) {
     super()
