@@ -66,6 +66,7 @@ class FetcherAPI {
         const job = new Job(task, {
           description: `Fetching ${url}`
         })
+
         this._queue.add(job)
         const { id, status } = job
         res.status(201).send({ id, status })

@@ -42,6 +42,12 @@ The following REST API is available to create Jobs:
 * `GET /job/:jobId` - Returns a pending or completed Job
 * `GET /jobs` - Returns all pending Jobs
 
+## Creating a Job
+
+``` bash
+curl -X POST http://localhost:3000/job -H 'Content-Type: application/json' -d'{"url": "https://google.com"}'
+```
+
 ## Queue and Jobs
 
 Core library to manage Queues and Jobs:

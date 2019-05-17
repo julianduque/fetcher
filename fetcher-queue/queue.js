@@ -76,9 +76,6 @@ class Queue extends EventEmitter {
     if (this._pendingCount < this._concurrency) {
       // Extract the job
       const job = this._queue.pop()
-
-      // Run the job
-      try { await job.run() } catch (err) {}
       this.emit('processed', job)
 
       // Notify job completion
@@ -90,6 +87,9 @@ class Queue extends EventEmitter {
 
       job.on('completed', onCompleted)
       job.on('error', onCompleted)
+
+      // Run the job
+      try { await job.run() } catch (err) {}
 
       // Start the queue loop
       if (!this._interval) {
