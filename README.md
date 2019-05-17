@@ -84,13 +84,6 @@ async function main () {
     // job.results
   })
 
-  // Get all processed jobs
-  queue.on('processed', job => {
-    // job.id
-    // job.status
-    // job.results
-  })
-
   // Get all completed jobs
   queue.on('completed', job => {
     // job.id

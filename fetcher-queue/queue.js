@@ -41,22 +41,8 @@ class Queue extends EventEmitter {
     await this._runQueue()
   }
 
-  /**
-   * Add multiple Jobs as an array to the queue
-   *
-   * @param {Array} jobs
-   */
-  async addAll (jobs) {
-    assert(jobs, new Error('jobs is required'))
-    assert(Array.isArray(jobs), 'jobs must be an array')
-
-    this._queue.unshift(...jobs)
-    this._pendingCount = this._pendingCount + jobs.length
-    await this._runQueue()
-  }
-
   async _onInterval () {
-    if (this._pending === 0) {
+    if (this._pendingCount === 0) {
       clearInterval(this._interval)
       this._interval = undefined
     }
@@ -72,30 +58,30 @@ class Queue extends EventEmitter {
       return false
     }
 
+    // Extract the job
+    const job = this._queue.pop()
+
+    // Notify job completion
+    const onCompleted = () => {
+      this._pendingCount--
+      this._pending.delete(job.id)
+      this.emit('completed', job)
+    }
+
+    job.on('completed', onCompleted)
+    job.on('error', onCompleted)
+
+    // Run the job
+    try {
+      await job.run()
+    } catch (err) {}
+
     // Check if we can run a job concurrently
     if (this._pendingCount < this._concurrency) {
-      // Extract the job
-      const job = this._queue.pop()
-      this.emit('processed', job)
-
-      // Notify job completion
-      const onCompleted = () => {
-        this._pendingCount--
-        this._pending.delete(job.id)
-        this.emit('completed', job)
-      }
-
-      job.on('completed', onCompleted)
-      job.on('error', onCompleted)
-
-      // Run the job
-      try { await job.run() } catch (err) {}
-
       // Start the queue loop
       if (!this._interval) {
         this._interval = setInterval(() => this._onInterval(), 0)
       }
-
       return true
     }
 

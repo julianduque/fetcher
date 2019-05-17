@@ -1,9 +1,9 @@
 const { Job, Queue } = require('../')
 
 const task = Promise.resolve(42)
-const queue = new Queue()
+const queue = new Queue(2)
 
-queue.on('processed', job => {
+queue.on('completed', job => {
   console.log(job)
 })
 
@@ -15,6 +15,9 @@ async function main () {
     new Job(task),
     new Job(task)
   ]
-  await queue.addAll(jobs)
+
+  jobs.forEach(job => {
+    queue.add(job)
+  })
 }
 main()

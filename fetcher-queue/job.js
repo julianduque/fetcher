@@ -44,15 +44,13 @@ class Job extends EventEmitter {
   async run () {
     try {
       this._results = await this._task
+      this._status = 'completed'
+      this.emit('completed', this._results)
     } catch (err) {
       this._error = err
       this._status = 'failed'
       this.emit('error', err)
-      return
     }
-
-    this._status = 'completed'
-    this.emit('completed', this._results)
   }
 
   get id () {
