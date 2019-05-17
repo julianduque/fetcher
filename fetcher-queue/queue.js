@@ -12,7 +12,7 @@ const { EventEmitter } = require('events')
 
 class Queue extends EventEmitter {
   /**
-   * Creates an Queue with specified concurrency
+   * Creates a Queue with specified concurrency
    *
    * @param {Number} concurrency Queue concurrerency
    */
@@ -26,7 +26,7 @@ class Queue extends EventEmitter {
   }
 
   /**
-   * Add a job or array of jobs
+   * Add a job to the queue
    *
    * @param {Job} job
    */
@@ -42,7 +42,7 @@ class Queue extends EventEmitter {
   }
 
   /**
-   * Add multiple Jobs as an array
+   * Add multiple Jobs as an array to the queue
    *
    * @param {Array} jobs
    */
@@ -77,6 +77,10 @@ class Queue extends EventEmitter {
       // Extract the job
       const job = this._queue.pop()
 
+      // Run the job
+      try { await job.run() } catch (err) {}
+      this.emit('processed', job)
+
       // Notify job completion
       const onCompleted = () => {
         this._pendingCount--
@@ -87,10 +91,7 @@ class Queue extends EventEmitter {
       job.on('completed', onCompleted)
       job.on('error', onCompleted)
 
-      // Run the job
-      try { await job.run() } catch (err) {}
-      this.emit('processed', job)
-
+      // Start the queue loop
       if (!this._interval) {
         this._interval = setInterval(() => this._onInterval(), 0)
       }
